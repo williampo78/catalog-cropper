@@ -65,6 +65,23 @@ const canvas = document.getElementById('canvas');
     drawCanvas();
   });
 
+  function applyZoom(newScale) {
+    const clamped = Math.min(2, Math.max(0.2, newScale));
+    scale = clamped;
+    zoomSlider.value = Math.round(clamped * 100);
+    zoomLabel.textContent = Math.round(clamped * 100) + '%';
+    resizeCanvas();
+    drawCanvas();
+  }
+
+  // Ctrl + 滾輪縮放，同時阻止瀏覽器預設縮放
+  window.addEventListener('wheel', (e) => {
+    if (!e.ctrlKey) return;
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.03 : 0.03;
+    applyZoom(scale + delta);
+  }, { passive: false });
+
   function resizeCanvas() {
     canvas.width = Math.round(img.width * scale);
     canvas.height = Math.round(img.height * scale);
@@ -75,7 +92,7 @@ const canvas = document.getElementById('canvas');
     const off = document.createElement('canvas');
     off.width = w; off.height = h;
     off.getContext('2d').drawImage(img, x, y, w, h, 0, 0, w, h);
-    return off.toDataURL('image/png');
+    return off.toDataURL('image/jpeg', 0.9);
   }
 
   // ── 把手座標（canvas 座標系） ──────────────────────
@@ -512,7 +529,7 @@ const canvas = document.getElementById('canvas');
     const c = crops[i];
     const a = document.createElement('a');
     a.href = c.dataUrl;
-    a.download = `${c.name}.png`;
+    a.download = `${c.name}.jpg`;
     a.click();
   }
 
@@ -528,7 +545,7 @@ const canvas = document.getElementById('canvas');
       } else {
         nameCount[filename] = 0;
       }
-      zip.file(`${filename}.png`, c.dataUrl.split(',')[1], { base64: true });
+      zip.file(`${filename}.jpg`, c.dataUrl.split(',')[1], { base64: true, compression: 'DEFLATE' });
     });
     const blob = await zip.generateAsync({ type: 'blob' });
     const a = document.createElement('a');
