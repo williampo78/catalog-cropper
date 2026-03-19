@@ -65,6 +65,23 @@ const canvas = document.getElementById('canvas');
     drawCanvas();
   });
 
+  function applyZoom(newScale) {
+    const clamped = Math.min(2, Math.max(0.2, newScale));
+    scale = clamped;
+    zoomSlider.value = Math.round(clamped * 100);
+    zoomLabel.textContent = Math.round(clamped * 100) + '%';
+    resizeCanvas();
+    drawCanvas();
+  }
+
+  // Ctrl + 滾輪縮放，同時阻止瀏覽器預設縮放
+  window.addEventListener('wheel', (e) => {
+    if (!e.ctrlKey) return;
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.03 : 0.03;
+    applyZoom(scale + delta);
+  }, { passive: false });
+
   function resizeCanvas() {
     canvas.width = Math.round(img.width * scale);
     canvas.height = Math.round(img.height * scale);
