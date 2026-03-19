@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DM 圖片裁切工具</title>
+
+</head>
+
+<header>
+  <h1>✂️ DM 裁切工具</h1>
+  <div class="toolbar">
+    <label class="btn btn-primary" style="cursor:pointer;">
+      📂 開啟圖片
+      <input type="file" id="fileInput" accept="image/*" style="display:none" />
+    </label>
+    <button class="btn btn-secondary" id="btnUndo" disabled>↩ 復原</button>
+    <button class="btn btn-secondary" id="btnClearAll" disabled>🗑 全部清除</button>
+    <button class="btn btn-success" id="btnDownloadAll" disabled>⬇ 全部下載</button>
+    <div class="zoom-bar">
+      🔍 <input type="range" id="zoomSlider" min="20" max="200" value="100" />
+      <span id="zoomLabel">100%</span>
+    </div>
+  </div>
+  <div class="badge">已裁切：<span id="countBadge">0</span> 個</div>
+</header>
+
+<div class="main">
+  <div class="canvas-area" id="canvasArea">
+    <canvas id="canvas"></canvas>
+    <div class="hint" id="hint">
+      <div class="icon">🖼️</div>
+      <p>點擊「開啟圖片」載入 DM 圖<br>然後用滑鼠拖拉框選商品區域</p>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-header">
+      裁切清單
+      <span id="listCount" style="color:#e94560;font-weight:700;">0</span>
+    </div>
+    <div class="crop-list" id="cropList">
+      <div class="empty-state">
+        <div class="icon">✂️</div>
+        <p>尚無裁切項目<br>框選商品後會顯示在這裡</p>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <button class="btn btn-success" id="btnDownloadAll2" disabled>⬇ 全部下載 ZIP</button>
+    </div>
+  </div>
+</div>
+
+
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>
