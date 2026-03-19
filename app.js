@@ -92,7 +92,7 @@ const canvas = document.getElementById('canvas');
     const off = document.createElement('canvas');
     off.width = w; off.height = h;
     off.getContext('2d').drawImage(img, x, y, w, h, 0, 0, w, h);
-    return off.toDataURL('image/png');
+    return off.toDataURL('image/jpeg', 0.9);
   }
 
   // ── 把手座標（canvas 座標系） ──────────────────────
@@ -529,7 +529,7 @@ const canvas = document.getElementById('canvas');
     const c = crops[i];
     const a = document.createElement('a');
     a.href = c.dataUrl;
-    a.download = `${c.name}.png`;
+    a.download = `${c.name}.jpg`;
     a.click();
   }
 
@@ -545,7 +545,7 @@ const canvas = document.getElementById('canvas');
       } else {
         nameCount[filename] = 0;
       }
-      zip.file(`${filename}.png`, c.dataUrl.split(',')[1], { base64: true });
+      zip.file(`${filename}.jpg`, c.dataUrl.split(',')[1], { base64: true, compression: 'DEFLATE' });
     });
     const blob = await zip.generateAsync({ type: 'blob' });
     const a = document.createElement('a');
